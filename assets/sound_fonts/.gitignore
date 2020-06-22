@@ -1,0 +1,5 @@
+# Dont push .sf2 files (soundfont files)
+*.[Ss][fF]2
+
+*.txt
+*.swp
