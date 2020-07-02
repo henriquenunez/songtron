@@ -72,9 +72,9 @@ if __name__ == '__main__':
     #binarize(img)
 
     pic = imageio.imread('../assets/songtron_test_0.png')
- #   plt.figure(figsize=(7,7))
-  #  plt.axis('off')
-   # plt.imshow(pic)
+    #plt.figure(figsize=(7,7))
+    #plt.axis('off')
+    #plt.imshow(pic)
 
     gray = lambda rgb : np.dot(rgb[... , :3] , [0.21 , 0.72, 0.07])
 
@@ -83,16 +83,31 @@ if __name__ == '__main__':
     plt.figure(figsize=(7,7))
     plt.imshow(bin_img, cmap='gray')
     plt.axis('off')
-    plt.show()
-
 
     lines = kernel_horizontal(bin_img)
+    plt.figure(figsize=(7,7))
+    plt.imshow(lines, cmap='gray')
+    plt.axis('off')
 
     bin_img[lines == 255] = 0 
 
     plt.figure(figsize=(7,7))
     plt.imshow(bin_img, cmap='gray')
     plt.axis('off')
+
+    blurred = cv2.medianBlur(bin_img, 5)
+    plt.figure(figsize=(7,7))
+    plt.imshow(blurred, cmap='gray')
+    plt.axis('off')
+
+    kernel = np.ones((5,5),np.uint8)
+    closing = cv2.morphologyEx(bin_img, cv2.MORPH_CLOSE, kernel)
+
+    plt.figure(figsize=(12,12))
+    plt.imshow(closing, cmap='gray')
+    plt.axis('off')
+
+
     plt.show()
 
 
