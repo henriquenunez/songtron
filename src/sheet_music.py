@@ -2,15 +2,16 @@ import imageio
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-
-import time
 import sys
 
 class Sheet_music():
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, pic):
+        self.pic = pic
         self.bboxes = []
         self.segmentate()
+
+    def get_bboxes(self):
+        return self.bboxes
 
     def kernel_horizontal(self, bin_im):
         horizontal = np.copy(bin_im)
@@ -115,7 +116,7 @@ class Sheet_music():
         return (min_x, max_x, min_y, max_y)
 
     def segmentate(self):
-        pic = imageio.imread(self.filename)
+        pic = self.pic
         gray = lambda rgb : np.dot(rgb[... , :3] , [0.21 , 0.72, 0.07])
 
         #---------- Binarize ----------#
@@ -170,7 +171,7 @@ class Sheet_music():
 
         print("Found %d bboxes"%(len(self.bboxes)))
 
-        plt.show()
+        #plt.show()
         return self.bboxes
 
-sm = Sheet_music("../assets/dataset4.png")
+#sm = Sheet_music("../assets/dataset4.png")

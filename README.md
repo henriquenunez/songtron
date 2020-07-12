@@ -16,5 +16,4 @@ pip3 install -r requirements.txt
 sudo apt-get install fluidsynth
 ```
 
-
-To play music it is also necessary to download some found fonts. The soundfonts being used now can downloaded [here](https://www.flstudiomusic.com/2010/02/25-piano-soundfonts.html).
+To play music it is also necessary to download some found fonts. The soundfonts being used now can downloaded [here](https://www.flstudiomusic.com/2010/02/25-piano-soundfonts.html). After downloading, extract the files to `assets/sound_fonts/`.

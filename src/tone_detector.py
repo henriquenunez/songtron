@@ -1,13 +1,13 @@
 import math
 
-class tone_detector():
+class Tone_detector():
 
     #h_lines = height of the lines
     #y_cleff = min and max y of the detected cleff
     #proportion = already calculated proportion of the cleff
-    def __init__(self, h_lines, y.cleff, proportion):
+    def __init__(self, h_lines, y_cleff, proportion):
         self.h_lines = h_lines
-        self.y.cleff = y.cleff
+        self.y_cleff = y_cleff
         self.proportion = proportion
         self.notes = []
 
@@ -19,7 +19,7 @@ class tone_detector():
         self.distance_tones = np.mean(self.distances)//2
 
         #finding the height of the note of reference from the cleff
-        self.cleff = self.proportion * (self.y.cleff[1] - self.y.cleff[0]) + self.y.cleff[0]
+        self.cleff = self.proportion * (self.y_cleff[1] - self.y_cleff[0]) + self.y_cleff[0]
         #reference for cleff
         init_note = ord('G')
         init_number_note = 3
