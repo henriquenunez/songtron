@@ -21,9 +21,13 @@ fluidsynth.init("../assets/sound_fonts/Drama Piano.sf2", 'alsa')
 
 
 # Transpose note
+#fluidsynth.play_Note(Note("A-1"))
+#time.sleep(0.25)
+#fluidsynth.play_Note(Note("A-2"))
+#time.sleep(0.25)
 #fluidsynth.play_Note(Note("A-3"))
 #time.sleep(0.25)
-#fluidsynth.play_Note(Note("A"))
+#fluidsynth.play_Note(Note("A-4"))
 #time.sleep(0.25)
 #fluidsynth.play_Note(Note("A-5"))
 #time.sleep(0.25)
