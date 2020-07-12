@@ -9,11 +9,12 @@ Check [here](https://github.com/henriquenunez/songtron/blob/master/Partial%20Rep
 
 ## Installation
 
- shell
+``` shell
 cd songtron
 source env/bin/activate
 pip3 install -r requirements.txt
 sudo apt-get install fluidsynth
+```
 
 
 To play music it is also necessary to download some found fonts. The soundfonts being used now can downloaded [here](https://www.flstudiomusic.com/2010/02/25-piano-soundfonts.html).

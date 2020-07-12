@@ -3,17 +3,17 @@ from mingus.containers.note import Note
 from mingus.containers.note_container import NoteContainer
 import time
 
-class NotePlayer():
+class Note_player():
     def __init__(self):
         self.notes = [["E",4], ["D#",4], ["E",4], ["D#",4], ["E",4], ["B",4], ["D",4], ["C",4], ["A",4]]
-        self.songFont = "../assets/sound_fonts/Drama Piano.sf2"
+        self.song_font = "../assets/sound_fonts/Drama Piano.sf2"
         self.driver = "alsa"
-        fluidsynth.init(self.songFont, self.driver)
+        fluidsynth.init(self.song_font, self.driver)
 
-    def setNotes(self, notes):
+    def set_notes(self, notes):
         self.notes = notes
 
-    def playNotes(self):
+    def play_notes(self):
         '''
         The input is a vector of pairs
         input example: notes=[["E",4], ["D#",4], ["E",2]]
@@ -34,11 +34,11 @@ class NotePlayer():
         '''
 
         for note in self.notes:
-            noteTone = note[0]
-            noteType = note[1]
+            note_tone = note[0]
+            note_type = note[1]
 
-            fluidsynth.play_Note(Note(noteTone))
-            time.sleep(1/float(noteType))
+            fluidsynth.play_Note(Note(note_tone))
+            time.sleep(1/float(note_type))
 
-np = NotePlayer()
-np.playNotes()
+np = Note_player()
+np.play_notes()
