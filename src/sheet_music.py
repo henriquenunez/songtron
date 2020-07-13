@@ -1,6 +1,7 @@
 import imageio
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import cv2
 import sys
 
@@ -8,22 +9,27 @@ class Sheet_music():
     def __init__(self, pic):
         self.pic = pic
         self.bboxes = []
+        self.lines_coord = []
         self.segmentate()
 
     def get_bboxes(self):
         return self.bboxes
 
+    def get_lines_coord(self):
+        return self.lines_coord
+
     def get_binarized(self):
         return self.binarized
 
     def kernel_horizontal(self, bin_im):
-        horizontal = np.copy(bin_im)
-        rows = horizontal.shape[1]
+        bin_cpy = np.copy(bin_im)
+        rows = bin_cpy.shape[1]
         size = rows//20
-        structure = cv2.getStructuringElement(cv2.MORPH_RECT, (size, 1))
-        horizontal = cv2.erode(horizontal, structure)
-        horizontal = cv2.dilate(horizontal, structure)
-        return horizontal
+        horizontal = cv2.getStructuringElement(cv2.MORPH_RECT, (size, 1))
+        bin_cpy = cv2.erode(bin_cpy, horizontal)
+        bin_cpy = cv2.dilate(bin_cpy, horizontal)
+
+        return bin_cpy
 
     def conv2d_image(self, f, w):
         N, M = f.shape[0:2]
@@ -68,6 +74,23 @@ class Sheet_music():
 
     def distance(self, a, b):
         return np.abs(a-b)
+
+    def find_lines_height(self, img, thresh):
+        lines_found_heights = []
+        x,y = img.shape
+        search_y = y//2
+        inside_line = False
+
+        for temp_x in range(x):
+            if img[temp_x, search_y] > thresh: #were are in a white pixel
+                print("Pixel {} is above thresh.".format((temp_x, search_y)))
+                if not inside_line:
+                    lines_found_heights.append(temp_x)
+                inside_line = True
+            else:
+                inside_line = False
+
+        return lines_found_heights
 
     def region_growing_average(self, img, img_t, tolerance, seed, region_n): 
         x = seed[0]; y = seed[1]
@@ -122,17 +145,31 @@ class Sheet_music():
         pic = self.pic
         gray = lambda rgb : np.dot(rgb[... , :3] , [0.21 , 0.72, 0.07])
 
+        #plt.figure(figsize=(10,2))
+        ##plt.title("Original image")
+        #plt.imshow(pic, cmap='gray')
+        #plt.axis('off')
         #---------- Binarize ----------#
         bin_img = self.threshold(gray(pic), self.otsu_threshold(pic))
         self.binarized = bin_img
 
         #---------- Remove lines ----------#
         lines = self.kernel_horizontal(bin_img)
+        self.lines_coord = self.find_lines_height(lines, self.otsu_threshold(pic))
         bin_img[lines == 255] = 0
+        #plt.figure(figsize=(10,2))
+        ##plt.title("Image after Line Removal")
+        #plt.imshow(bin_img, cmap='gray')
+        #plt.axis('off')
 
         #---------- Morphological closing ----------#
-        kernel = np.ones((4,1),np.uint8)
+        kernel = np.ones((3,1),np.uint8)
         closing = cv2.morphologyEx(bin_img, cv2.MORPH_CLOSE, kernel)
+        #closing = cv2.dilate(bin_img, kernel)
+        #plt.figure(figsize=(10,2))
+        ##plt.title("Image after Morphological Closing")
+        #plt.imshow(closing, cmap='gray')
+        #plt.axis('off')
 
         #---------- Segment notes ----------#
         segmented_notes = self.do_segmentation(closing, self.otsu_threshold(pic))
@@ -155,12 +192,20 @@ class Sheet_music():
         plt.imshow(closing, cmap='gray')
         plt.axis('off')
 
+        # Reading an image in default mode
         for count, region in enumerate(np.unique(segmented_notes)):
             ranges = self.get_bounding_rectangle(segmented_notes, region)
             #print("Reg. {} Ranges are {}".format(region, ranges))
             temp = np.copy(closing)
             img = temp[ranges[0]:ranges[1],ranges[2]:ranges[3]]
             self.bboxes.append(ranges)
+
+
+            #start_point = (ranges[2], ranges[0])
+            #end_point = (ranges[3], ranges[1])
+            #color = (0, 0, 255)
+            #thickness = 1
+            #detections = cv2.rectangle(detections, start_point, end_point, color, thickness)
 
             # Show figures
             #plt.figure()
@@ -173,9 +218,23 @@ class Sheet_music():
             #    filename = '../assets/'+str(count)+'.png'
             #    cv2.imwrite(filename, img)
 
+
+        #plt.figure()
+        #plt.subplot(121)
+        #plt.imshow(closing, cmap='gray')
+        #plt.axis('off')
+
+        #structure = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 1))
+        #closing = cv2.erode(closing, structure)
+        #closing = cv2.dilate(closing, structure)
+
+        #plt.subplot(122)
+        #plt.imshow(closing, cmap='gray')
+        #plt.axis('off')
+
         print("Found %d bboxes"%(len(self.bboxes)))
 
-        #plt.show()
+        plt.show()
         return self.bboxes
 
 #sm = Sheet_music("../assets/dataset4.png")
