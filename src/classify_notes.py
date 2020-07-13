@@ -55,9 +55,9 @@ class Classify_notes():
      """
     def populate_references(self):
         #Loads ref images into memory and exctracts features.
-        img_list = [] #Temp list for storing matrices.
-        feature_list = [] #Temp list for storing features.
         for symbol in self.reference:
+            img_list = [] #Temp list for storing matrices.
+            feature_list = [] #Temp list for storing features.
             for i in range(self.reference[symbol]):
                 filename = "../assets/reference/"+symbol+"/"+str(i)+".png"
                 print(filename)
@@ -70,15 +70,18 @@ class Classify_notes():
     def __find_best_match_mask(self, img):
         general_match_list = []
         for symbol in self.reference:
+            if symbol == "treble":
+                pass
+                #print(self.reference_images["treble"][0])
             symbol_match_list = []
-            print("Symbol is: {}".format(symbol))
+            #print("Symbol is: {}".format(symbol))
             for ref_img in self.reference_images[symbol][0]:
-                print("Ref img is {}".format(ref_img))
+                #print("Ref img is {}".format(ref_img))
                 symbol_match_list.append(apply_mask(ref_img, img))
             #Will insert the max match and its related symbol
             general_match_list.append((max(symbol_match_list), symbol))
         print(general_match_list)
-        return sorted(general_match_list, key=lambda x : x[0])[0]
+        return sorted(general_match_list, key=lambda x : x[0], reverse=True)[0]
 
     def classify(self):
         #Every bounding box.
