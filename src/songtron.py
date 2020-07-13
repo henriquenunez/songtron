@@ -23,4 +23,4 @@ class Songtron():
         self.np.set_notes(notes_to_play)
         self.np.play_notes()
 
-songtron = Songtron("../assets/littleStar.png")
+songtron = Songtron("../assets/jingle_bells.png")

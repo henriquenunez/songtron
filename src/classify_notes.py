@@ -18,9 +18,10 @@ class Classify_notes():
 
         # Qty images in reference
         self.reference = {
-            "crotchet":2,
+            "crotchet":3,
             "treble":1,
-            "minim": 1,
+            "minim": 2,
+            "quaver": 1,
             "semibrave": 2
         }
         self.notes_tones = []
@@ -97,7 +98,7 @@ class Classify_notes():
                 plt.imshow(bbox_img, cmap='gray')
                 plt.axis('off')
                 plt.show()"""
-                
+
                 best_mask = self.__find_best_match_mask(bbox_img)
                 #print(best_mask)
                 if best_mask[0] > 0.7:
@@ -108,27 +109,20 @@ class Classify_notes():
                     #If the region is suitable, lets also check out the RMS error.
                     print("Error: {}".format(rmse_feat))
                     if rmse_feat[0] < 0.15 and rmse_feat[2] < 20:
-                        print("Imagem passou no crivo de aristóteles!")
+                        #print("Imagem passou no crivo de aristóteles!")
                         #Once we got the best match, here we should weight it to decide which class it belongs to.
-                        plt.figure()
-                        plt.imshow(bbox_img, cmap='gray')
-                        plt.axis('off')
-                        plt.show()
+                        #plt.figure()
+                        #plt.imshow(bbox_img, cmap='gray')
+                        #plt.axis('off')
+                        #plt.show()
                         self.notes_tones.append(best_mask[1]) #Get best mask symbol.
-                    #Once we got the best match, here we should weight it to decide which class it belongs to.
-                    #For the sake of simplicity, we'll just use the best mask value.
-                    #plt.figure()
-                    #plt.imshow(bbox_img, cmap='gray')
-                    #plt.axis('off')
-                    #plt.show()
-                    self.notes_tones.append(best_mask[1]) #Get best mask symbol.
-                    relative_center = self.get_center(bbox_img)
-                    center = [0,0]
-                    center[0] = bbox[2] + relative_center[0]
-                    center[1] = bbox[0] + relative_center[1]
-                    notes_found.append([center, best_mask[1]])
-                    if best_mask[1] == 'treble':
-                        self.cleff = (bbox[2],bbox[3])
+                        relative_center = self.get_center(bbox_img)
+                        center = [0,0]
+                        center[0] = bbox[2] + relative_center[0]
+                        center[1] = bbox[0] + relative_center[1]
+                        notes_found.append([center, best_mask[1]])
+                        if best_mask[1] == 'treble':
+                            self.cleff = (bbox[2],bbox[3])
 
         cleff_found = False
         for note in self.notes:
