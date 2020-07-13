@@ -17,20 +17,22 @@ class Classify_notes():
         # Qty images in reference
         self.reference = {
             "crotchet":15,
-            "treble":1
+            "treble":1,
+            "minim": 12,
+            "semibrave": 2
         }
         self.notes_tones = []
-        
+
         self.reference_images = {}
         self.ref_list = []
-        
+
         self.populate_references()
         self.classify()
 
     def __feature_mean(self, features_list):
         #Each element in features_list is a tuple
         feats = list(zip(*features_list))
-        
+
         bw = sum(feats[0])/len(feats[0])
         wh = sum(feats[1])/len(feats[1])
         center_mass_x = sum(feats[2])/len(feats[2])
@@ -38,7 +40,7 @@ class Classify_notes():
 
         computed = (bw, wh, center_mass_x, center_mass_y)
         print(computed)
-        
+
         return computed
 
     def __compute_rms(self, feats):
@@ -79,6 +81,7 @@ class Classify_notes():
                 #print("Ref img is {}".format(ref_img))
                 symbol_match_list.append(apply_mask(ref_img, img))
             #Will insert the max match and its related symbol
+            print(symbol_match_list)
             general_match_list.append((max(symbol_match_list), symbol))
         print(general_match_list)
         return sorted(general_match_list, key=lambda x : x[0], reverse=True)[0]

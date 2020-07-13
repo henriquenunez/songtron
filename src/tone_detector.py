@@ -22,7 +22,7 @@ class Tone_detector():
         self.cleff = self.proportion * (self.y_cleff[1] - self.y_cleff[0]) + self.y_cleff[0]
         #reference for cleff
         init_note = ord('G')
-        init_number_note = 3
+        init_number_note = 4
 
         h_diff = center - self.cleff
         qnt_tones = round(h_diff/self.distance_tones)
