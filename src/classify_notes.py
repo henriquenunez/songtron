@@ -163,27 +163,14 @@ class Classify_notes():
 
     def get_ellipse(self, bin_im):
         vertical = np.copy(bin_im)
-        #plt.figure()
-        #plt.subplot(121)
-        #plt.imshow(vertical)
-        size = vertical.shape[1]
+       size = vertical.shape[1]
         print(size)
         vertical[:,0:size//4] = 0
         vertical[:,size-(size//4):size] = 0
-        #vertical[:][size-4:size-1] = 0
-        #disk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (size,size))
-        #removing_vertical = cv2.erode(vertical, disk)
-        #removing_vertical = cv2.dilate(removing_vertical, disk)
-        #plt.subplot(122)
-        #plt.imshow(vertical)
-        #plt.show()
         return vertical
 
     def get_center(self, image):
         little_ellipses = self.get_ellipse(image)
-        #plt.figure()
-        #plt.imshow(little_ellipses, cmap='gray')
-        #plt.axis('off')
         return self.center_mass(little_ellipses)
 
     def get_classified_notes(self):

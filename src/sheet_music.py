@@ -21,6 +21,7 @@ class Sheet_music():
     def get_binarized(self):
         return self.binarized
 
+    #for getting the lines
     def kernel_horizontal(self, bin_im):
         bin_cpy = np.copy(bin_im)
         rows = bin_cpy.shape[1]
@@ -44,6 +45,7 @@ class Sheet_music():
                 g[x][y] = np.sum(np.multiply(region_f.astype(np.float), w_flip.astype(np.float)))
         return g
 
+    #Otsu's binarization
     def otsu_threshold(self, im):
         # Compute histogram and probabilities of each intensity level
         pixel_counts = [np.sum(im == i) for i in range(256)]
@@ -92,7 +94,8 @@ class Sheet_music():
 
         return lines_found_heights
 
-    def region_growing_average(self, img, img_t, tolerance, seed, region_n): 
+
+    def region_growing_average(self, img, img_t, tolerance, seed, region_n):
         x = seed[0]; y = seed[1]
         img_t[x, y] = region_n
         avg = np.mean(img[np.where(img_t==region_n)])

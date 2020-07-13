@@ -1,6 +1,7 @@
 import math
 import numpy as np
 
+#Class detects tone of the notes 
 class Tone_detector():
     #h_lines = height of the lines
     #y_cleff = min and max y of the detected cleff
@@ -20,6 +21,7 @@ class Tone_detector():
         self.distance_tones = np.mean(self.distances)//2
 
         #finding the height of the note of reference from the cleff
+        #not using this, using the coordinates of the second line
         #self.cleff = self.proportion * (self.y_cleff[1] - self.y_cleff[0]) + self.y_cleff[0]
         self.cleff = self.h_lines[3]
 
@@ -43,6 +45,7 @@ class Tone_detector():
         whole_tone = tone+'-'+str(init_number_note)
         return whole_tone
 
+    #tempo of the note received by the classifier
     def detect_tempo(self, tempo):
         time = 0
         if(tempo == "semibreve"):
@@ -59,6 +62,7 @@ class Tone_detector():
             time = 32
         return time
 
+    #set notes to self.notes
     def set_notes(self, info_notes):
         for info_note in info_notes:
             tone = self.detect_tones(info_note[0])
@@ -68,3 +72,4 @@ class Tone_detector():
 
     def get_notes(self):
         return self.notes
+

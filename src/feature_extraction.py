@@ -7,9 +7,6 @@ from utils import *
 def bw_ratio(img):
     pixel_count = img.size
     white_pixels = img[img == 255].size
-    #print(pixel_count)
-    #print(img)
-    #print(img[img == 255].size)
     return white_pixels/pixel_count
 
 def wh_ratio(img): #Width over height
@@ -22,7 +19,7 @@ def center_mass_spread_ratio(img):
     width = img.shape[1]
 
     ratio = 0
-    
+
     #Okay, first let us compute center of mass of bin image
     white_pixels = np.where(img==255)
 
@@ -35,7 +32,7 @@ def center_mass_spread_ratio(img):
         x = white_pixels[1][i]
         #Now calculate difference in this coo. and c.m.
         ratio = abs(y-y_mean) + abs(x-x_mean)
-    
+
     #Since image is already at origin, we can just use height and width.
     return ratio
 
@@ -62,8 +59,6 @@ def apply_mask(ref, img):
     binarized_ref = threshold(resized_ref, otsu_threshold(resized_ref))
     binarized_img = threshold(resized_img, otsu_threshold(resized_img))
 
-    #print(binarized_ref)
-    #print(binarized_img)
     count = np.where(resized_ref == resized_img)[0].shape[0]
     return count/(w*h)
 
