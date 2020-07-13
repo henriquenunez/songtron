@@ -13,6 +13,9 @@ class Sheet_music():
     def get_bboxes(self):
         return self.bboxes
 
+    def get_binarized(self):
+        return self.binarized
+
     def kernel_horizontal(self, bin_im):
         horizontal = np.copy(bin_im)
         rows = horizontal.shape[1]
@@ -121,6 +124,7 @@ class Sheet_music():
 
         #---------- Binarize ----------#
         bin_img = self.threshold(gray(pic), self.otsu_threshold(pic))
+        self.binarized = bin_img
 
         #---------- Remove lines ----------#
         lines = self.kernel_horizontal(bin_img)

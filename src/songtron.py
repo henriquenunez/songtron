@@ -9,6 +9,6 @@ class Songtron():
         self.pic = imageio.imread(filename)
         self.sm = Sheet_music(self.pic)
         self.bboxes = self.sm.get_bboxes()
-        self.cn = Classify_notes(self.pic, self.bboxes)
+        self.cn = Classify_notes(self.sm.get_binarized(), self.bboxes)
 
 songtron = Songtron("../assets/dataset4.png")
