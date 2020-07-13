@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import cv2
 import imageio
 
+import classifier
+
 class Classify_notes():
     def __init__(self, pic, bboxes):
         # Input
