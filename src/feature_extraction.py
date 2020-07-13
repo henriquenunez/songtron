@@ -51,8 +51,8 @@ def apply_mask(ref, img):
     binarized_ref = threshold(resized_ref, otsu_threshold(resized_ref))
     binarized_img = threshold(resized_img, otsu_threshold(resized_img))
 
-    print(binarized_ref)
-    print(binarized_img)
+    #print(binarized_ref)
+    #print(binarized_img)
     count = np.where(resized_ref == resized_img)[0].shape[0]
     return count/(w*h)
 

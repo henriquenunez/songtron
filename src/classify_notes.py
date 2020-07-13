@@ -3,6 +3,7 @@ import cv2
 import imageio
 import numpy as np
 from utils import *
+from feature_extraction import *
 
 class Classify_notes():
     def __init__(self, pic, bboxes):
@@ -23,7 +24,7 @@ class Classify_notes():
         self.reference_images = {}
         self.ref_list = []
         
-        self.populate_reference_images()
+        self.populate_references()
         self.classify()
 
     def __feature_mean(self, features_list):
@@ -70,12 +71,14 @@ class Classify_notes():
         general_match_list = []
         for symbol in self.reference:
             symbol_match_list = []
+            print("Symbol is: {}".format(symbol))
             for ref_img in self.reference_images[symbol][0]:
+                print("Ref img is {}".format(ref_img))
                 symbol_match_list.append(apply_mask(ref_img, img))
             #Will insert the max match and its related symbol
             general_match_list.append((max(symbol_match_list), symbol))
         print(general_match_list)
-        return sorted(general_match_list, lambda x : x[0])[0]
+        return sorted(general_match_list, key=lambda x : x[0])[0]
 
     def classify(self):
         #Every bounding box.
@@ -84,20 +87,25 @@ class Classify_notes():
             bbox_img = self.pic[bbox[0]:bbox[1],bbox[2]:bbox[3]]
             #Just a check if we got a valid region.
             if bbox_img.shape[0]>0 and bbox_img.shape[1]>0:
-                print(self.get_center(bbox_img))
+                """print(self.get_center(bbox_img))
                 plt.figure()
                 plt.imshow(bbox_img, cmap='gray')
                 plt.axis('off')
-                plt.show()
+                plt.show()"""
                 #Classification related computations.
                 #First, extract features from image.
                 features = extract_features(bbox_img)
                 print(self.__compute_rms(features))
-                best_mask = self.__find_best_match_mask(img)
+                best_mask = self.__find_best_match_mask(bbox_img)
                 print(best_mask)
-                #Once we got the best match, here we should weight it to decide which class it belongs to.
-                #For the sake of simplicity, we'll just use the best mask value.
-                self.notes_tones.append(best_mask[1]) #Get best mask symbol.
+                if best_mask[0] > 0.7:
+                    #Once we got the best match, here we should weight it to decide which class it belongs to.
+                    #For the sake of simplicity, we'll just use the best mask value.
+                    plt.figure()
+                    plt.imshow(bbox_img, cmap='gray')
+                    plt.axis('off')
+                    plt.show()
+                    self.notes_tones.append(best_mask[1]) #Get best mask symbol.
 
     def center_mass(self, img):
         #Okay, first let us compute center of mass of bin image
