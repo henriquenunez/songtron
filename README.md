@@ -7,7 +7,7 @@ Check [here](https://github.com/henriquenunez/songtron/blob/master/src/SongTron%
 
 Check [here](https://github.com/henriquenunez/songtron/blob/master/Partial%20Report.pdf) to see the PDF of the partial report.
 
-Check [here](https://github.com/henriquenunez/songtron/blob/master/SongTron%20-%20Final%20Report.pdf) to see the PDF of the final report.
+Check [here](https://github.com/henriquenunez/songtron/blob/master/Final%20Report.pdf) to see the PDF of the final report.
 
 
 ## Installation
