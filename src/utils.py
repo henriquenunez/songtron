@@ -30,3 +30,6 @@ def otsu_threshold(im):
 def threshold(pic, threshold):
     return ((pic < threshold) * 255).astype('uint8')
 
+
+def rmse(a,b):
+    return sqrt((a-b)**2)
