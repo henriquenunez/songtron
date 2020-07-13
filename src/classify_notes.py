@@ -33,26 +33,18 @@ class Classify_notes():
         
         bw = sum(feats[0])/len(feats[0])
         wh = sum(feats[1])/len(feats[1])
-        center_mass_x = sum(feats[2])/len(feats[2])
-        center_mass_y = sum(feats[3])/len(feats[3])
+        mass_spread = sum(feats[2])/len(feats[2])
+        #center_mass_y = sum(feats[3])/len(feats[3])
 
-        computed = (bw, wh, center_mass_x, center_mass_y)
+        computed = (bw, wh, mass_spread)#, center_mass_y)
         print(computed)
         
         return computed
 
-    def __compute_rms(self, feats):
-        rmse_list = []
-        #Returns list of computed rmse
-        for ref_feat in self.ref_list:
-            rmse_list.append(list(map(rmse, list(ref_feat[0]), list(feats))))
-        return rmse_list
-    """
-        #Receives an image, and checks which rmse is the least one.
-        def classify(self, img):
-            img_feat = extract_features(img)
-            print(self.__compute_rms(img_feat))
-     """
+    def __compute_rms(self, feats, symbol):
+        symbol_mean_feats = self.reference_images[symbol][1]
+        return list(map(rmse, list(symbol_mean_feats), list(feats)))
+
     def populate_references(self):
         #Loads ref images into memory and exctracts features.
         for symbol in self.reference:
@@ -80,7 +72,7 @@ class Classify_notes():
                 symbol_match_list.append(apply_mask(ref_img, img))
             #Will insert the max match and its related symbol
             general_match_list.append((max(symbol_match_list), symbol))
-        print(general_match_list)
+        #print(general_match_list)
         return sorted(general_match_list, key=lambda x : x[0], reverse=True)[0]
 
     def classify(self):
@@ -95,20 +87,24 @@ class Classify_notes():
                 plt.imshow(bbox_img, cmap='gray')
                 plt.axis('off')
                 plt.show()"""
-                #Classification related computations.
-                #First, extract features from image.
-                features = extract_features(bbox_img)
-                print(self.__compute_rms(features))
+                
                 best_mask = self.__find_best_match_mask(bbox_img)
-                print(best_mask)
+                #print(best_mask)
                 if best_mask[0] > 0.7:
-                    #Once we got the best match, here we should weight it to decide which class it belongs to.
-                    #For the sake of simplicity, we'll just use the best mask value.
-                    plt.figure()
-                    plt.imshow(bbox_img, cmap='gray')
-                    plt.axis('off')
-                    plt.show()
-                    self.notes_tones.append(best_mask[1]) #Get best mask symbol.
+                    #Extract features from image so we can compare
+                    features = extract_features(bbox_img)
+                    symbol_name = best_mask[1] #name of the class.
+                    rmse_feat = self.__compute_rms(features, symbol_name)
+                    #If the region is suitable, lets also check out the RMS error.
+                    print("Error: {}".format(rmse_feat))
+                    if rmse_feat[0] < 0.15 and rmse_feat[2] < 20:
+                        print("Imagem passou no crivo de aristóteles!")
+                        #Once we got the best match, here we should weight it to decide which class it belongs to.
+                        plt.figure()
+                        plt.imshow(bbox_img, cmap='gray')
+                        plt.axis('off')
+                        plt.show()
+                        self.notes_tones.append(best_mask[1]) #Get best mask symbol.
 
     def center_mass(self, img):
         #Okay, first let us compute center of mass of bin image

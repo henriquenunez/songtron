@@ -16,17 +16,28 @@ def wh_ratio(img): #Width over height
     y, x = img.shape
     return x/y
 
-def center_mass_ratio(img):
+#Calculates how spreaded the values are from the center of mass.
+def center_mass_spread_ratio(img):
     height = img.shape[0]
     width = img.shape[1]
 
+    ratio = 0
+    
     #Okay, first let us compute center of mass of bin image
-    white_pixels = np.where(img==0)
+    white_pixels = np.where(img==255)
+
     #This gives us two lists, containing the coordinates.
     y_mean = white_pixels[0].sum()/white_pixels[0].size
     x_mean = white_pixels[1].sum()/white_pixels[1].size
+
+    for i in range(white_pixels[0].size):
+        y = white_pixels[0][i]
+        x = white_pixels[1][i]
+        #Now calculate difference in this coo. and c.m.
+        ratio = abs(y-y_mean) + abs(x-x_mean)
+    
     #Since image is already at origin, we can just use height and width.
-    return (x_mean/width, y_mean/height)
+    return ratio
 
 #will count how many pixels match.
 def apply_mask(ref, img):
@@ -58,6 +69,5 @@ def apply_mask(ref, img):
 
 #This function returns the above features.
 def extract_features(img):
-    center_mass = center_mass_ratio(img)
-    return (bw_ratio(img), wh_ratio(img), center_mass[0], center_mass[1])
+    return (bw_ratio(img), wh_ratio(img), center_mass_spread_ratio(img))#center_mass[0], center_mass[1])
 

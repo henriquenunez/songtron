@@ -1,4 +1,5 @@
 import numpy as np
+from math import *
 
 #For binarizing...
 def otsu_threshold(im):
