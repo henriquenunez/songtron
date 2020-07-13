@@ -40,5 +40,5 @@ class Note_player():
             fluidsynth.play_Note(Note(note_tone))
             time.sleep(1/float(note_type))
 
-np = Note_player()
-np.play_notes()
+#np = Note_player()
+#np.play_notes()
