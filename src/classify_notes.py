@@ -3,6 +3,8 @@ import cv2
 import imageio
 import numpy as np
 
+import classifier
+
 class Classify_notes():
     def __init__(self, pic, bboxes):
         # Input
