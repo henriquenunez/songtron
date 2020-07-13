@@ -163,7 +163,7 @@ class Classify_notes():
 
     def get_ellipse(self, bin_im):
         vertical = np.copy(bin_im)
-       size = vertical.shape[1]
+        size = vertical.shape[1]
         print(size)
         vertical[:,0:size//4] = 0
         vertical[:,size-(size//4):size] = 0

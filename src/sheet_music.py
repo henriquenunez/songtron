@@ -217,9 +217,9 @@ class Sheet_music():
             #plt.axis('off')
 
             # Save Images
-            if img.shape[0]>0 and img.shape[1]>0:
-                filename = '../assets/'+str(count)+'.png'
-                cv2.imwrite(filename, img)
+            #if img.shape[0]>0 and img.shape[1]>0:
+            #    filename = '../assets/'+str(count)+'.png'
+            #    cv2.imwrite(filename, img)
 
 
         #plt.figure()
