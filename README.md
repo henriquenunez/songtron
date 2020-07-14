@@ -9,7 +9,7 @@ Check [here](https://github.com/henriquenunez/songtron/blob/master/Partial%20Rep
 
 Check [here](https://github.com/henriquenunez/songtron/blob/master/Final%20Report.pdf) to see the PDF of the final report.
 
-
+Check [here](https://youtu.be/5BXviDchx84) to see the presentation video.
 ## Installation
 
 ``` shell
