@@ -1,9 +1,9 @@
 # songtron
 
-## Partial report
+## Final report
 We are describing this project and the algorithms used in this pdf.
 
-Check [here](https://github.com/henriquenunez/songtron/blob/master/src/SongTron%20-%20Partial%20Report.ipynb) to see the code development so far performing the image segmentation.
+Check [here](https://github.com/henriquenunez/songtron/blob/master/src/SongTron%20-%Final%20Report.ipynb) to see the step-by-step image processing techniques applied.
 
 Check [here](https://github.com/henriquenunez/songtron/blob/master/Partial%20Report.pdf) to see the PDF of the partial report.
 
